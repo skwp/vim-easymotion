@@ -399,12 +399,12 @@
 				" number instead of the visual column
 				let col_num -= lines[line_num]['mb_compensation']
 
-				if strlen(lines[line_num]['marker']) > 0
-					" Substitute marker character if line length > 0
-					let lines[line_num]['marker'] = substitute(lines[line_num]['marker'], '\%' . col_num . 'c..', target_key, '')
+				if col_num + 1 > strlen(lines[line_num]['marker'])
+					" Append marker characters if not long enough to substitute
+					let lines[line_num]['marker'] = strpart(lines[line_num]['marker'], 0, col_num - 1) . target_key
 				else
-					" Set the line to the marker character if the line is empty
-					let lines[line_num]['marker'] = target_key
+					" Substitute marker characters otherwise
+					let lines[line_num]['marker'] = substitute(lines[line_num]['marker'], '\%' . col_num . 'c..', target_key, '')
 				endif
 
 				" Add highlighting coordinates
